@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--PRINCIPALES-->
+
+    <color name="colorPrimary">#4ABDAC</color>
+    <color name="colorPrimaryDark">#039BE5</color>
+    <color name="colorAccent">#FC4A1A</color>
+    <color name="colorLight">#F7B733</color>
+
+    <!--OPCIONALES-->
+
+    <color name="colorRed">#F44336</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorWhiteHint">#dedcdc</color>
+    <color name="colorDark">#242424</color>
+    <color name="colorTransparente">#00FFFFFF</color>
+    <color name="colorTransparenteNegro">#24242424</color>
+    <color name="colorlogin">#4ABDAC</color>
+
+    <!--PRIMARIOS-->
+
+    <color name="ColorPrimaryFirebase">#039BE5</color>
+    <color name="ColorPrimaryDarkFirebase">#2C384A</color>
+    <color name="ColorAccentCoralFirebase">#FF8A65</color>
+    <color name="ColorAccentGrisFirebase">#ECEFF1</color>
+
+    <!--LOGOTIPO-->
+
+    <color name="ColorAmarilloFirebase">#FFCA28</color>
+    <color name="ColorAmbarFirebase">#FFA000</color>
+    <color name="ColorNaranjaFirebase">#F57C00</color>
+</resources>
