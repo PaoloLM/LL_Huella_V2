@@ -6,4 +6,12 @@
         <item name="colorAccent">@color/colorlogin</item>
     </style>
 
+    <style name="AppTheme.TemaPopup">
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+        <item name="android:radius">50dp</item>
+        <item name="android:backgroundTint">@color/colorTransparente</item>
+    </style>
+
 </resources>

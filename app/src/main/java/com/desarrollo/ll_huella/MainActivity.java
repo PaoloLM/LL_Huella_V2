@@ -1,10 +1,13 @@
 package com.desarrollo.ll_huella;
 
+import androidx.annotation.AnyRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import android.app.ProgressDialog;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -26,8 +29,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.airsaid.imagecomparator.AverageHashComparison;
+import com.airsaid.imagecomparator.DifferencesHashComparison;
 import com.airsaid.imagecomparator.ImageComparator;
 import com.bumptech.glide.Glide;
+import com.google.android.material.textfield.TextInputEditText;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -39,26 +44,31 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    //IMAGEN
+    TextInputEditText loginCorreo;
+
+    // IMAGEN
     private static final int GALLERY_INTENT = 1;
     Uri uriimagen;
-
     private int VerificarImagen = 0;
 
+    // Complementos
+    public static List<ClsPromedio> posibilidades;
     ImageButton registroHuella, registroHuella2;
-    Field[] fields;
+    Field[] Recursos;
     List<Integer> drawables;
-    ProgressDialog progress;
 
+    // Complementos comparacion
     float max = 0;
     int indice = 0;
-    String nombreUsuario = "";
+    Uri ruta = null;
+    int posibles = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        loginCorreo = findViewById(R.id.loginCorreo);
         registroHuella2 = findViewById(R.id.registroHuella2);
         registroHuella = findViewById(R.id.registroHuella);
         registroHuella.setOnClickListener(new View.OnClickListener() {
@@ -70,13 +80,25 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        registroHuella2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this
+                        , ImageActivity.class));
+            }
+        });
+
         findViewById(R.id.loginIngresar).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (VerificarImagen == 1) {
+                    posibilidades = new ArrayList<>();
+                    Toast.makeText(getApplicationContext()
+                            , "Verificando huella", Toast.LENGTH_SHORT).show();
                     new TareaCompararImagenes().execute();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Falta datos", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext()
+                            , "Falta datos", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -100,9 +122,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void ExtraerIndicadores() {
-        fields = R.drawable.class.getFields();
+        Recursos = R.drawable.class.getFields();
         drawables = new ArrayList<Integer>();
-        for (Field field : fields) {
+        for (Field field : Recursos) {
             if (field.getName().endsWith("_1")) {
                 try {
                     drawables.add(field.getInt(null));
@@ -117,7 +139,9 @@ public class MainActivity extends AppCompatActivity {
         Context context = getApplicationContext();
         Drawable drawable_original = registroHuella.getDrawable();
 
-        //Obteniendo Bitmap
+        //String paolo = getPackageName(drawable_original);
+
+        //Obteniendo Bitmap del original
         Bitmap bitmap_drawable_original = ((BitmapDrawable)drawable_original).getBitmap();
 
         //Parametros para la comparacion
@@ -126,6 +150,7 @@ public class MainActivity extends AppCompatActivity {
 
         max = 0;
         indice = 0;
+        posibles = 0;
 
         for (int i = 0; i < drawables.size(); i++) {
             //TODO: OBTENER DRAWABLE Y BITMAP DE IMAGENES GUARDADAS
@@ -134,16 +159,18 @@ public class MainActivity extends AppCompatActivity {
 
             //Comparando
             float result = mImageComparator.comparison(bitmap_drawable_original, bitmap_drawable_comparar);
+
             if (result >= max) {
+                posibles++;
+                posibilidades.add(new ClsPromedio(drawables.get(i), result));
+                ruta = getUriToResource(this, drawables.get(i));
                 max = result;
                 indice = drawables.get(i);
+                Log.e("maximo", max + " ");
             } else {
                 // no hace nada
             }
         }
-
-        Log.e("Comparacion promedio", max + " imagen:" + indice );
-
 
     }
 
@@ -169,6 +196,38 @@ public class MainActivity extends AppCompatActivity {
                     .fitCenter()
                     .centerCrop()
                     .into(registroHuella2);
+
+            Toast.makeText(getApplicationContext(), "Posibles coincidencias: "
+                    +  posibles + " imagenes" + "\nValor de la comparacion al "
+                    + max + " %", Toast.LENGTH_SHORT).show();
+
+            loginCorreo.setText(ObtenerNombre());
         }
+    }
+
+
+
+
+
+
+    private String ObtenerNombre() {
+        String nombre = ruta.getLastPathSegment();
+        nombre = nombre.replace('_',' ');
+        nombre = nombre.substring(0, nombre.length() - 2);
+        return nombre;
+    }
+
+
+
+    // TODO : NOMBRE
+    // Obtencion del nombre del archivo
+    public static final Uri getUriToResource(@NonNull Context context
+            , @AnyRes int resId) throws Resources.NotFoundException {
+        Resources res = context.getResources();
+        Uri resUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE +
+                "://" + res.getResourcePackageName(resId)
+                + '/' + res.getResourceTypeName(resId)
+                + '/' + res.getResourceEntryName(resId));
+        return resUri;
     }
 }

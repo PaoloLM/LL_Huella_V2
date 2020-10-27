@@ -47,9 +47,10 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_marginTop="160dp"
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="100dp"
         android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
@@ -115,48 +116,49 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_marginTop="10dp"
-            android:gravity="center_horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:gravity="center_horizontal"
             android:orientation="horizontal">
 
             <ImageButton
-                android:layout_marginEnd="10dp"
                 android:id="@+id/registroHuella"
                 android:layout_width="120dp"
-                android:layout_height="150dp"
+                android:layout_height="160dp"
                 android:layout_gravity="center"
+                android:layout_marginEnd="10dp"
                 android:background="@color/colorTransparente"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_huella" />
 
             <ImageButton
-                android:layout_marginEnd="10dp"
                 android:id="@+id/registroHuella2"
                 android:layout_width="120dp"
-                android:layout_height="150dp"
+                android:layout_height="160dp"
                 android:layout_gravity="center"
+                android:layout_marginEnd="10dp"
                 android:background="@color/colorTransparente"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_huella" />
 
         </LinearLayout>
 
-
-
-        <Button
-            android:id="@+id/loginIngresar"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="32dp"
-            android:background="@drawable/button_rounded_login"
-            android:text="Iniciar Sesión"
-            android:textColor="@android:color/white"
-            android:textSize="16dp" />
-
     </LinearLayout>
+
+    <Button
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="10dp"
+        android:id="@+id/loginIngresar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/button_rounded_login"
+        android:text="Iniciar Sesión"
+        android:textColor="@android:color/white"
+        android:textSize="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
